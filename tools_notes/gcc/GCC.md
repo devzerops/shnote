@@ -1,3 +1,7 @@
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
 ## GCC LANG tips
 ------------------------
 **GCC(GNU Compiler Collection)**
@@ -86,3 +90,15 @@
 | gcc -static | 정적 라이브러리로 링킹 수행 | gcc -static src.c obj.o -o test | test |
 | gcc -shared | 공유 라이브러리 우선 링크하도록 해줌 | gcc -shared -o test.so obj.o | test.so |
 | gcc -s | 실행 파일에서 모든 기호 테이블 및 재배치 정보를 제거 | gcc -s test.c | a.out |
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

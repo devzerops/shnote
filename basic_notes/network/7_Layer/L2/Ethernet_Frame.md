@@ -1,4 +1,8 @@
-# 이더넷 프레임
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## 이더넷 프레임
 
 ![Ethernet Frame](https://www.gatevidyalay.com/wp-content/uploads/2018/10/Ethernet-Frame-Format-IEEE-802.3.png)
 
@@ -94,3 +98,15 @@ It is a 4 byte field that contains the CRC code for error detection.
 
 
 출차: https://www.gatevidyalay.com/ethernet-ethernet-frame-format/
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

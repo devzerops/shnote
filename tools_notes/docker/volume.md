@@ -1,4 +1,8 @@
-# docker volume
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## docker volume
 파일을 저장할 형식, 위치, 설정 등을 저장하여 docker container을 효과적으로 관리하기 위해 만든 하나의 형태의 시스템입니다.  
 단순하게 사용해도 파일을 관리하기 훨씬 쉬워지기에 유용합니다.  
   
@@ -32,7 +36,7 @@ docker ps -a --format "table {{.Ports}} {{.Name}}"
 ```
 
 
-# volume basic location change
+## volume basic location change
 
 ``` bash
 docker volume create -d local -o o=bind -o type=none -o device=/home/user/data my-volume
@@ -42,7 +46,7 @@ docker volume create -d local -o o=bind -o type=none -o device=/home/user/data m
 docker run --mount source=my-volume,target=/data <image-name>
 ```
 
-# volume option example
+## volume option example
 
 * device: 
 * type: 볼륨을 저장할 유형
@@ -54,7 +58,7 @@ docker run --mount source=my-volume,target=/data <image-name>
 --opt o=bind
 ```
 
-# --opt에 대한 설명
+## --opt에 대한 설명
 
 |    Option   |                                   Description                                   |         Example        |
 |:-----------:|:-------------------------------------------------------------------------------:|:----------------------:|
@@ -69,3 +73,15 @@ docker run --mount source=my-volume,target=/data <image-name>
 
 
 [docker volume DOC](https://docs.docker.com/storage/volumes/)
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

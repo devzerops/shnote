@@ -1,4 +1,8 @@
-# docker table format option
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## docker table format option
 
 | Placeholder 	| Description                                                                                   	|
 |-------------	|-----------------------------------------------------------------------------------------------	|
@@ -17,7 +21,7 @@
 | .Mounts     	| Names of the volumes mounted in this container.                                               	|
 | .Networks   	| Names of the networks attached to this container.                                             	|
 
-# 예시
+## 예시
 
 ``` bash
 docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Ports}}"
@@ -27,7 +31,7 @@ docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Ports}}"
 docker inspect (images) --format "{{json .}}"
 ```
 
-# other option
+## other option
 
 
 | Placeholder 	| Description                                                                                   	|
@@ -41,3 +45,15 @@ docker inspect (images) --format "{{json .}}"
 | upper         | upper transforms a string into its uppercase representation.|
 | println       | println prints each value on a new line.|
 | Hint          | To find out what data can be printed, show all content as json|
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

@@ -1,4 +1,8 @@
-# 기본 네트워크 구조 
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## 기본 네트워크 구조 
 ## NAT Mode
 
 * default mode
@@ -17,7 +21,7 @@
 * 컨테이너는 docker_proxy라는 데몬을 통하여 호스트와 연결 
 * 컨테이너는 기본적으로 호스트와 격리된 상태
 
-# 도커 컨테이너 모드
+## 도커 컨테이너 모드
 
 * bridge: This is the default network mode in Docker. It creates a virtual network interface on the host, and each container is connected to this network via a virtual Ethernet interface.
 
@@ -28,3 +32,15 @@
 * macvlan: This mode creates a new layer 2 network on the host, and assigns a unique MAC address to each container. This allows the container to have a directly-assigned IP address on the host's network and is useful for running containers on a LAN with DHCP.
  
 * host: This mode connects the container directly to the host's network stack, giving the container access to the host's network interfaces and IP addresses.
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

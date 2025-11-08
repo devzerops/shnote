@@ -1,4 +1,8 @@
-# 1nn
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## 1nn
 
 | 1xx   | Informational         |
 |------	|---------------------	|
@@ -7,7 +11,7 @@
 | 101  	| Switching Protocols 	|
 | 102  	| Processing          	|
 
-# 2nn
+## 2nn
 
 | 2xx   | Succesful                     |
 |-----	|-----------------------------	|
@@ -22,7 +26,7 @@
 | 208 	| Already Reported            	|
 | 226 	| IM Used                     	|
 
-# 3nn
+## 3nn
 
 | 3xx   | Redirection           |
 |-----	|--------------------	|
@@ -36,7 +40,7 @@
 | 307 	| Temporary Redirect 	|
 | 308 	| Permanent Redirect 	|
 
-# 4nn
+## 4nn
 
 | 4xx   | Client Error                      |
 |-----	|---------------------------------	|
@@ -69,7 +73,7 @@
 | 431 	| Request Header Fields Too Large 	|
 | 451 	| Unavailable For Legal Reasons   	|
 
-# 5nn
+## 5nn
 
 | 5xx   | Server Error                      |
 |-----	|---------------------------------	|
@@ -84,3 +88,15 @@
 | 508 	| Loop Detected                   	|
 | 510 	| Not Extended                    	|
 | 511 	| Network Authentication Required 	|
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

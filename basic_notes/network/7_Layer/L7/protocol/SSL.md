@@ -1,4 +1,8 @@
-# SSL protocol Stack
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## SSL protocol Stack
 ![protocol Stack](https://img.brainkart.com/imagebk9/ZZjtoMH.jpg)
 
 
@@ -10,7 +14,7 @@
 | Alert    | 비정상 조건을 알리는데 사용 |
 | Heartbeat| 프로토콜 개체의 가용성을 모니터링 할 때 사용|
 
-# SSL Hanshake protocol
+## SSL Hanshake protocol
 ![ssl handshake](https://img.brainkart.com/imagebk9/QXH36wj.jpg)
 
 | 메시지 유형 | 매개변수 |
@@ -28,7 +32,19 @@
 
 봐야할거: https://www.brainkart.com/article/Secure-Socket-Layer-and-Transport-Layer-Security_8480/
 
-# SSL 취약점
+## SSL 취약점
 
 SSL Stripping Attack: 공격자가 중간에서 SSL로 보류되는 세션을 벗겨냄
-Heartbleed Attack: SSL이 페이로드 값을 검증하지않앗습니다. 
+Heartbleed Attack: SSL이 페이로드 값을 검증하지않앗습니다.
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

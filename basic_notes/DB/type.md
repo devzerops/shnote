@@ -1,4 +1,8 @@
-# DDL (Data Definition Language)
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## DDL (Data Definition Language)
 
 데이터 정의어란? 데이터베이스를 정의하는 언어이며, 데이터를 생성, 수정, 삭제하는 등의 데이터의 전체의 골격을 결정하는 역할을 하는 언어이다.
 
@@ -7,7 +11,7 @@
 * DROP : 데이터베이스, 테이블을 삭제
 * TRUNCATE : 테이블을 초기화
 
-# DML (Data Manipulation Language) 
+## DML (Data Manipulation Language) 
 
 데이터 조작어란? 정의된 데이터베이스에 입력된 레코드를 조회하거나 수정하거나 삭제하는 등의 역할을 하는 언어.
 
@@ -17,7 +21,7 @@
 * DELET : 데이터 삭제
 * COMMIT : 데이터 작업처리 완료
 
-# DCL (Data Control Language) 
+## DCL (Data Control Language) 
 
 데이터베이스에 접근하거나 객체에 권한을 주는등의 역할을 하는 언어
 
@@ -25,3 +29,15 @@
 * REVOKE : 특정 데이터베이스 사용자에게 특정 작업에 대한 수행 권한을 박탈, 회수
 * COMMIT : 트랜잭션의 작업을 저장
 * ROLLBACK : 트랜잭션의 작업을 취소, 원래대로 복구
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

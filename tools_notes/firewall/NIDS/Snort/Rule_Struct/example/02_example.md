@@ -1,4 +1,8 @@
-# 예제 2
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## 예제 2
 
 여기까지만 설명 추가하고 나머지는 기능만 설명
 
@@ -10,7 +14,7 @@ fast_pattern; reference:url,dropbox.com; classtype:policy-violation; sid:2020565
 rev:1; metadata:created_at 2015_02_24, updated_at 2015_02_24;)
 ```
 
-# alert 
+## alert 
 ``` snort
 alert udp $HOME_NET any -> any 53
 ```
@@ -18,14 +22,14 @@ alert udp $HOME_NET any -> any 53
 인아웃바운드의 udp를 사용하는 53번 포트 즉 DNS를 찾으라는 의미 
 any는 8.8.8.8 일수도 있고 8.8.4.4 일 수도 있고 사내 dns일 수도 있기떄문이다.
 
-# msg
+## msg
 ``` snort
 (msg:"ET POLICY Dropbox DNS Lookup - Possible Offsite File Backup in Use";
 ```
 
 msg 는 alert가 발동하면 입력하는 메시지
 
-# content
+## content
 ``` snort
 content:"|01 00 00 01 00 00 00 00 00 00|"; depth:10; offset:2;
 ```
@@ -44,14 +48,14 @@ content:"|09|client-lb|07|dropbox|03|com|00|"; nocase; distance:0;
 `nocase`: 대소문자 구분하지 않음
 
 
-# fast_pattern
+## fast_pattern
 ``` snort
 fast_pattern;
 ```
 
 `fast_pattern`: content의 길이가 가장 짧은 것 부터 찾아라
 
-# refernce
+## refernce
 ``` snort
 reference:url,dropbox.com;
 ```
@@ -60,7 +64,7 @@ reference:url,dropbox.com;
 
 url인 dropbox.com을 참조했다는것을 나타냄 (주석하고 비슷함)
 
-# classtype
+## classtype
 
 ``` snort
 classtype:policy-violation; sid:2020565; rev:1; metadata:created_at 2015_02_24, updated_at 2015_02_24;)
@@ -85,3 +89,15 @@ config classification: (분류), (설명), (우선순위)
 `metadata`:룰을 만든 날짜와 수정한 날짜
 
 2015_02_24년에 만들어졌고 2015_02_24년도에 업데이트 됐다.
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

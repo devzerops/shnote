@@ -1,6 +1,10 @@
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
 ![NAT](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/NAT_Concept-en.svg/1920px-NAT_Concept-en.svg.png)
 ![NAT](https://s8185.pcdn.co/wp-content/uploads/2013/11/41.jpg)
-# NAT(Network Address Translation)
+## NAT(Network Address Translation)
 IP 패킷의 TCP/UDP 포트 숫자와 소스 및 목적지의 IP 주소 등을 재기록하며 라우터를 통해 네트워크 트래픽을 주고받는 기술이다.
 
 쉽게 말하자면은 NAT이란 호스트의 아이피를 공인아이피`(public ip)`로 게스트들이 취급하여 그 아이피를 기준으로 가상의`(private IP)` ip를 사용하는 기술이다.    
@@ -10,15 +14,15 @@ IP 패킷의 TCP/UDP 포트 숫자와 소스 및 목적지의 IP 주소 등을 �
 * TCP/UDP의 체크섬도 다시 계산되어 재기록 해야됨
 * 3~4계층까지 다시 프로토콜을 자기가 다시 만들고 그것을 기록하는것
 
-# 쓰는 이유
+## 쓰는 이유
 * 사설 네트워크에 속한 여러 개의 호스트가 하나의 공인 IP 주소를 사용하여 인터넷에 접속하기 위해서입니다.
 
-# 주의사항
+## 주의사항
 * 사설을 공인으로 변화하는데만 사용하는건 아닙니다.  
 * 구조의 설계는 쉬워지지만 네트워크의 모니터링이 어려워져서 보안을 할때 전문 tap장비를 아웃라인 방식으로 사용할수밖에 없게되므로 네트워크가 아이러니하게 더욱 복잡해지고 비용이 증가합니다.
 * SPAN방식으로 모니터링이 가능하지만 당연하게도 데이터의 가용성이 침해될수 있기에 법적 증거로 인정되지 않습니다1.
 
-# 추가설명
+## 추가설명
 
 Network Address Translation 의 약자로써 네트워크 주소 변환을 의미합니다.  
 기본적으로 192.168.xx와 같은 사설(Private) IP 주소로는 외부와 통신(인터넷 연결 등) 할 수 없습니다. 외부와 통신할 수있는 IP주소는 오직 인터넷 IP 주소 관리 기관에서 공식적으로 발급한 공인(Public) IP 주소 뿐 입니다.  
@@ -32,7 +36,7 @@ Network Address Translation 의 약자로써 네트워크 주소 변환을 의�
 
 VMware Workstation 은 이 NAT 라우터를 자체적으로 내장하여 내부 사설망으로 구성된 가상 머신들이 외부와 통신할 수 있게 해줍니다.
 
-# DNAT(Destination Network Address Translation)
+## DNAT(Destination Network Address Translation)
 ![DNAT](./img/DNAT.png)  
 
 DNAT은 Private NAT을 public NAT으로 PNAT을 사용하여 포트포워딩 시키는거다.  
@@ -40,10 +44,22 @@ DNAT은 Private NAT을 public NAT으로 PNAT을 사용하여 포트포워딩 시
 즉 포워딩 시키지않으면 DNAT으로 접근이 안된다는 장점이 있다.  
 
 
-# SNAT(Source Network Address Translation)
+## SNAT(Source Network Address Translation)
 ![SNAT](./img/SNAT.png)  
 단순하게 Private NAT을 public NAT으로 1대1 대응 시킨거다.  
 
-# Policy NAT
+## Policy NAT
 
  ACL을 사용하여 출발지와 목적지에 따라 변환을수행
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

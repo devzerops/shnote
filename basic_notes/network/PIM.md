@@ -1,4 +1,8 @@
-# PIM(Protocol Independent Multicast)  
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## PIM(Protocol Independent Multicast)  
 
 PIM(Protocol Independent Multicast)은 멀티캐스트 데이터를 전송하기 위한 프로토콜 중 하나로, 라우팅 프로토콜과 함께 동작하여 멀티캐스트 데이터를 전송할 수 있는 경로를 생성하고 유지합니다. PIM은 프로토콜에 독립적이므로, 다양한 라우팅 프로토콜과 함께 사용될 수 있습니다.
 
@@ -9,3 +13,15 @@ PIM 프로토콜은 라우터들 간에 멀티캐스트 트래픽을 라우팅�
 * 확장성: PIM은 대규모 네트워크에서도 사용이 가능한 확장성을 가지고 있습니다. 라우팅 프로토콜과 함께 사용됨으로써 대규모 네트워크에서도 라우팅 경로를 생성할 수 있습니다.
 
 PIM 프로토콜은 Sparse mode와 Dense mode 두 가지 모드가 있습니다. Sparse mode는 멀티캐스트 데이터 전송이 적은 경우에 적합하며, Dense mode는 멀티캐스트 데이터 전송이 많은 경우에 적합합니다. 또한, PIM-SM(Protocol Independent Multicast-Sparse Mode)과 PIM-DM(Protocol Independent Multicast-Dense Mode) 두 가지 버전이 있습니다.
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

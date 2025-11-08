@@ -1,26 +1,32 @@
-# Wireshark란?
+- 마지막 업데이트: 2025-09-24
+- 상태: 검토중
 
-가장 대중적이고 가장 유명한 네트워크, 프로토콜, 패킷 분석 도구이다.
+# 개요
+Wireshark는 GUI 기반의 대표적인 패킷 분석 도구로, 수백 가지 프로토콜을 자동 해석하고 디코딩합니다. 문제 구간 식별, 프로토콜 동작 검증, 침해 조사에 폭넓게 활용됩니다.
 
+## 주요 장점과 한계
+- 장점: 풍부한 프로토콜 디코더, 강력한 디스플레이 필터, 통계/흐름 그래프 제공.
+- 한계: 트래픽 점유율, 장시간 분석에는 비효율적이므로 CLI 도구(tshark)나 NetFlow/IDS와 병행 필요.
 
-와이어 샤크는 이럴때 매우 효과적이다.
+# 핵심 개념
+- **캡처 vs 디스플레이 필터**: `tcp port 80`(캡처)와 `tcp.port == 80`(디스플레이)처럼 문법이 다르므로 상황에 맞게 구분 사용합니다.
+- **컬러링 룰**: 기본 룰 또는 사용자 정의 룰을 적용해 비정상 패킷을 강조합니다.
+- **Follow TCP/UDP Stream**: 흐름을 재조합해 요청/응답을 순차적으로 확인합니다.
+- **Expert Info**: 재전송, Window Zero 등 경고를 한눈에 제공해 문제 지점을 빠르게 찾을 수 있습니다.
+- **보안 주의**: 루트 권한으로 직접 실행하지 말고 `dumpcap` 캡처 권한만 부여한 그룹을 사용합니다.
 
-1. 알려진 문제의 근원지를 조사
-2. 기기 간 특정한 프로토콜이나 스트림을 찾는다.
-3. 네트워크에서 특이한 타이밍(Timing), 프로토콜 플래그, 비트 분석 등
+# 실무/시험 포인트
+- 침해 조사에서는 `Statistics > Conversations`로 세션별 통계를 확인한 뒤, 필터를 적용해 세부 페이로드를 분석합니다.
+- 흔한 디스플레이 필터 조합: `ip.addr == 10.0.0.5`, `tcp.flags.syn == 1 && tcp.flags.ack == 0`, `dns.qry.name contains "example.com"`.
+- TLS 트래픽 분석 시 `ssl.handshake.type == 1`로 ClientHello를 확인하고, JA3 핑거프린트는 스크립트 또는 Zeek와 연동해 분석합니다.
+- 시험에서는 필터 문법, Follow Stream 기능, 캡처 파일 관리 방법을 자주 묻습니다.
 
-이럴때는 비효율적이다.
+# TODO / 후속 연구
+- `dumpcap` CLI 캡처 예제와 파일 롤링 옵션 추가.
+- 패킷 컬러링 룰(.colr) 공유 및 import 방법 정리.
+- HTTP2, QUIC 등 최신 프로토콜 분석 팁 정리.
 
-1. 프로토콜의 점유율 확인
-2. 네트워크의 트래픽을 분석
-3. 두 기기간의 통신을 추적하기
-
-# 주의사항 (반드시)  
-wireshark를 사용할떄 특히 기업에서 사용할떄 root로 wireshark를 사용하면 안됩니다.  
-wireshark는 패킷을 검사하는 도구지 패킷의 위협성을 판단하고 필터링하는 도구가 아니기에 악성 패킷의 payload로 인하여  
-내부 시스템이 payload에 의하여 망가질수 있습니다. 그렇기에 그룹으로 권한을 최소화 하고 사용해야됩니다.  
-검사로 인하여 내부 시스템이 바이러스와같은 공격에 감염되었을떄 `wireshark를 사용한 당사자에게 책임을 묻기에` 반드시 주의해야합니다.
-
-# 메뉴얼
-
-[wireshark basic document](https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html)
+# 참고 자료
+- Wireshark User Guide – [https://www.wireshark.org/docs/](https://www.wireshark.org/docs/).
+- Laura Chappell, *Wireshark Certified Network Analyst*.
+- `man dumpcap`, `man tshark` – CLI 캡처 옵션.

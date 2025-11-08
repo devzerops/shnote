@@ -1,3 +1,7 @@
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
 git command 
 ============
 
@@ -119,7 +123,7 @@ git command
 | --- | --- | --- |
 | git config --global user.() "" | git config --global user.name "me"   git config --global user.email "me@gmail.com" | 내 환경에서의 설정을 입력하는거다.   각 git마다 다르게 하고싶음 --local로 바꾸자 |
 
-# option list
+## option list
 
 
 > git reset option command
@@ -146,3 +150,15 @@ git command
 |color.ui|git의 출력결과 색상 활성화(보통 auto 설정)|
 
 ----
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

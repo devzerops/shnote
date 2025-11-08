@@ -1,8 +1,29 @@
-원자성(Atomicity): 트랜잭션은 모두 완료되거나 아무것도 수행하지 않는 원자적인 작업의 단위로 수행되어야 합니다. 즉, 트랜잭션 중 하나의 작업이 실패하면 이전에 수행된 작업들도 모두 롤백되어야 합니다.
+- 마지막 업데이트: 2025-09-24
+- 상태: 검토중
 
-일관성(Consistency): 트랜잭션이 실행 전과 후에 데이터베이스가 일관된 상태를 유지해야 합니다. 즉, 데이터베이스가 정해진 규칙에 맞게 유효한 상태를 유지해야 합니다.
+# ACID 속성 개요
+ACID는 트랜잭션이 데이터베이스 일관성을 유지하기 위해 만족해야 하는 네 가지 성질을 의미합니다. 금융, 결제, 주문 등 상태 변경이 중요한 시스템에서 핵심 검증 항목으로 다뤄집니다.
 
-격리성(Isolation): 여러 트랜잭션이 동시에 실행되는 경우에도 각 트랜잭션은 서로 영향을 주지 않고, 마치 독립적으로 실행되는 것처럼 보여야 합니다.
+# 핵심 개념
+- **Atomicity (원자성)**: 트랜잭션은 전부 성공하거나 전부 실패해야 하며, 실패 시 모든 작업을 롤백합니다.
+- **Consistency (일관성)**: 트랜잭션 전후에 데이터는 정의된 규칙(무결성 제약, 트리거 등)을 만족해야 합니다.
+- **Isolation (격리성)**: 동시에 실행되는 트랜잭션이 서로 간섭하지 않도록 가시성과 잠금 수준을 관리해야 합니다.
+- **Durability (지속성)**: 커밋된 결과는 전원 장애 등에도 영속 저장소(로그, WAL)에 의해 보존되어야 합니다.
 
-지속성(Durability): 트랜잭션이 성공적으로 완료된 후에는 그 결과가 영구적으로 유지되어야 합니다. 이를 위해 트랜잭션의 결과는 로그 등의 방법을 통해 영구적인 저장 매체에 저장되어야 합니다.
+# 실무/시험 포인트
+- WAL(Write-Ahead Logging), 체크포인트 등 영속성 메커니즘 구현을 이해해야 복구 시나리오를 설계할 수 있습니다.
+- Isolation 수준(`READ COMMITTED`, `SERIALIZABLE` 등)에 따라 `Dirty Read`, `Phantom Read` 발생 가능성이 달라집니다.
+- 분산 트랜잭션에서는 2PC/3PC, Saga 패턴 등 보완 기법을 추가적으로 고려해야 합니다.
 
+# TODO / 후속 연구
+- Isolation 수준별 현상(Dirty/Non-repeatable/Phantom Read) 표 작성.
+- PostgreSQL, MySQL, Oracle 기본 Isolation 수준 비교.
+- 분산 트랜잭션 CAP 정리 문서와 상호 링크.
+
+# 참고 자료
+- [PostgreSQL Documentation: Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
+- [Oracle Database Concepts](https://docs.oracle.com/en/database/) – 트랜잭션 관리 장.
+- [Martin Kleppmann, *Designing Data-Intensive Applications*] – 분산 시스템에서의 트랜잭션 설계.
+
+# 개요
+- (정리 예정)

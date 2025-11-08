@@ -1,65 +1,94 @@
-# NMap(Network Mapper)란?
+- 마지막 업데이트: 2025-09-25
+- 상태: 검토중
 
-기본적으로 네트워크를 탐지하는 기능을 가지고 있으며 포트스캔, 스텔스 스캔, 취약점 점검, 방화벽 회피, 공격, 네트워크 점검 등 
+# 개요
+Nmap(Network Mapper)은 호스트 발견, 포트 스캔, 서비스/버전 탐지, 방화벽 우회 테스트까지 지원하는 대표적 네트워크 진단 도구입니다. NSE(Nmap Scripting Engine)를 통해 취약점 진단과 자동화도 수행할 수 있습니다.
 
-다양한 방식으로 현대에는 거의 만능에 가까울정도로 기능이 다양하고 그만큼 쉬우면서도 어려운 도구이다.
+## TL;DR
+- 스캔 흐름은 `호스트 발견 → 포트 스캔 → 서비스/버전 → NSE 스크립트` 순으로 진행하면 분석이 쉽습니다.
+- 결과는 `-oA`로 통합 저장하고, `--reason`, `--packet-trace`로 방화벽/필터 동작을 확인하세요.
+- Mermaid 다이어그램과 실습 예제 출력으로 전체 워크플로와 기본 사용법을 빠르게 파악할 수 있습니다.
 
+## 기본 사용 패턴
+```bash
+nmap [스캔타입] [옵션] <대상>
+```
+예: `nmap -sS -p 22,80 -O -T4 192.168.10.0/24`
 
-# NSE(Nmap Script Engine)
+## 주요 스캔 유형
+| 옵션 | 설명 | 특징 |
+|------|------|------|
+| `-sS` | SYN(Half-open) 스캔 | 빠르고 은밀, 기본값 |
+| `-sT` | TCP Connect 스캔 | 표준 소켓 사용, 권한 불필요 |
+| `-sU` | UDP 스캔 | 느리지만 UDP 서비스 확인 |
+| `-sA` | ACK 스캔 | 방화벽 규칙 추정 |
+| `-sN`/`-sF`/`-sX` | NULL/FIN/Xmas | RFC 규칙을 이용한 스텔스 스캔 |
+| `-sV` | 서비스 버전 탐지 | 애플리케이션 버전 판별 |
+| `-O` | OS Fingerprint | TCP/IP 스택 특성 분석 |
 
-스크립트로 또한 한층 더 진보된 방식으로 nmap을 사용가능한데 nmap은 이걸 NSE라 부른다.
+## 포트/출력 옵션
+- `-p`: 포트 지정(`-p 1-1024`, `-p T:80,443,U:53`).
+- `-Pn`: 핑 스킵, 방화벽이 ICMP 차단하는 환경에서 사용.
+- `-T0~5`: 타이밍 템플릿(0=Paranoid, 5=Insane). 시험에서는 `-T4`가 일반적.
+- `-oN`/`-oX`/`-oG`/`-oA`: 결과 저장(일반/ XML/ Grepable/ 전체).
 
-LUA를 기반으로 만들어긴 기본적인 스크립트와 유저들이 직접 개발해서 만든 스크립트를 조합하여
+## NSE(Nmap Scripting Engine)
+- 스크립트 위치: `/usr/share/nmap/scripts`.
+- 실행 방식: `nmap --script=<category|script-name> <target>`.
+- 주요 카테고리: `default`, `safe`, `auth`, `vuln`, `discovery`, `brute` 등.
+- 예시: `nmap -sV --script=vuln 10.0.0.5`.
 
-목적에 맞게 다양한 방식으로 NMAP을 사용이 가능하게 만들수 있다.
+## 실습 예제
+```bash
+# 빠른 SYN 스캔 + 버전 탐지 + 결과 저장
+nmap -sS -sV -T4 -oA scans/web 192.168.10.15
 
-파일의 위치는 보통 아래링크에 위치해 있으며 루아를 기반으로 하기에 c언어와 연계도 가능하다.
+# 방화벽 추적을 위한 ACK 스캔
+nmap -sA --reason 203.0.113.20
 
-``` bash
-/usr/share/nmap/scripts
+# NSE default 카테고리 실행
+nmap -sV --script=default 192.168.10.15 -oN scans/default.log
 ```
 
-# 특징
-* 모든 운영체제에서 사용가능하다
-* 운영체제의 종류 및 사용 서비스에 대한 정보를 파악 가능
-* FTP 서버의 취약점을 이용한 bounce 공격을 수행 가능
-* NMap은 오픈소스로 누구나 소스를 맞춤형으로 변형도 가능하다.
-* 윈도우는 gui로도 사용이 가능하다
+예상 출력 일부:
+```
+Nmap scan report for 192.168.10.15
+Host is up (0.00043s latency).
+Not shown: 996 closed tcp ports (reset)
+PORT    STATE SERVICE VERSION
+22/tcp  open  ssh     OpenSSH 8.4p1 Ubuntu 5 (Ubuntu Linux; protocol 2.0)
+80/tcp  open  http    nginx 1.18.0 (Ubuntu)
+443/tcp open  https   nginx 1.18.0 (Ubuntu)
 
-# 기본 명령어
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+```
 
-* Scan Type
-	* sS : TCP SYN(Half-Open)Scan
-	* sT : TCP Connect(Open)Scan
-	* sU : UDP Scan
-	* sF : TCP FIN Scan: FIN 패킷을 이용한 스캔
-	* sX : TCP Xmas Scan: FIN, PSH, URG 패킷을 이용한 스캔
-	* sN : TCP NULL Scan: NULL 패킷을 이용한 스캔
-	* sA : TCP ACK Scan
-	* sP : Ping(icmp/icmp echo): Ping을 이용한 호스트 활성화 여부 확인 스캔
-	* sD : Decoy 스캔: 실제 스캐너 주소 외에도 다양한 주소로 위조하여 스캔하는 방식
-	* b : TCP FTP Bounce Scan, -b <FTP bounce proxy>
+# 핵심 개념
+- 호스트 발견(Ping 스캔) → 포트 스캔 → 서비스 탐지 → NSE 실행 순서로 이해하면 결과 분석이 쉽다.
+- 방화벽이 있는 환경에서는 `-sA`, `--reason`, `--packet-trace`로 필터링 동작을 역추적한다.
+- 성능 최적화 시 타이밍 템플릿과 병렬도(`--min-parallelism`, `--min-rate`)를 조정하되, IDS 회피 목적이라면 너무 높은 값은 피한다.
 
-* Port Option
-	* p 22 : 22번 포트 스캔
-	* p <service> : 특정 서비스명(ssh, telnet, http 등)으로 스캔
-	* p 20,25,80 : 20, 25, 80번 포트 스캔 -> 여러 포트 스캔
-	* p 1-1023 : 1~1023번 포트를 스캔 -> 일정 범위로 포트를 스캔
-	* pT:21,23,110,U:53 : TCP 21,23,110번 UDP 53번 포트를 스캔
+# 실무/시험 포인트
+- 보안 점검 보고서는 `-oA`로 표준화된 결과를 남긴 후 `xsltproc` 또는 `grep`으로 후처리한다.
+- `-sV`와 `--script vuln` 조합은 빠른 취약점 탐색에 유용하지만 오탐 가능성을 고려해 수동 검증이 필요하다.
+- 자격시험(OSCP, CEH 등)에서는 스캔 플래그 해석, NSE 사용법, 타깃 세그먼트 스캔 전략을 많이 묻는다.
 
-* Output Option
-	* v(verbose) : 상세정보 출력
-	* d : Debugging
-	* oN <file> : 결과를 일반 파일 형식으로 출력
-	* oX <file> : 결과를 XML 파일 형식으로 출력
-	* oG <file> : 결과를 Grepable(grep, awk 등으로 분석하기 편하게게 파일 형식으로 출력
-	* oA <Directoy>: 일반(.nmap), XML(.xml), Grepable(.gnmap) 파일로 분석
+```mermaid
+flowchart LR
+    Discover[호스트 발견 (Ping 스캔)] --> Ports[포트 스캔 (TCP/UDP)]
+    Ports --> Service[서비스/버전 탐지]
+    Service --> NSE[NSE 스크립트 실행]
+    NSE --> Output[결과 저장/보고 (-oA)]
+    Ports --> Firewall[방화벽 추적 (--reason, --packet-trace)]
+    Firewall --> Tuning[타이밍/병렬 조정 (-T, --min-rate)]
+```
 
+# TODO / 후속 연구
+- [ ] `nmap --script-updatedb` 사용 시나리오와 스크립트 작성 기초 정리.
+- [ ] 화이트리스트 네트워크에서의 대규모 스캔 자동화 스크립트 작성.
+- [ ] Wireshark로 스캔 패턴을 캡처하여 플래그별 패킷 차이를 시각화.
 
-* 기타 Option
-	* O : 대상 호스트의 운영체제 정보 출력
-	* F : 빠른 네트워크 스캐닝
-	* T0~5 : 0(아주 느림) ~ 5(아주 빠름)
-	* S : fake ip를 사용할수있다면 해줄수 있게 해줌
-	* Pn : 이 명령은 반대로 핑을 사용하지 않는다. nmap은 스캔에 있어 사전에 핑을 통해 호스트가 살아있음을 확인하고 진행하는데,<br> 보안 문제로 인해 핑을 무시하는 호스트에 대해서는 스캔을 할 수가 없다. 그러한 경우에는 위 명령을 통해 확인 절차를 스킵하자.
-	* 
+# 참고 자료
+- Gordon Lyon, *Nmap Network Scanning*.
+- 官方 Docs – [Nmap Reference Guide](https://nmap.org/book/man.html).
+- [NSE Documentation](https://nmap.org/book/nse.html).

@@ -1,4 +1,8 @@
-# 명령어 모음
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## 명령어 모음
 
 * ascii : 전송모드를 ASCII모드로 설정한다.(ascii또는 as)
 * binary : 전송모드를 BINARY모드로 설정한다.( binary또는 bi)
@@ -31,3 +35,15 @@
 * size :remote시스템에 있는 파일의 크기를 byte단위로 표시한다.(size index.html)
 * status : 현재 연결된 ftp세션모드에 대한 설정을 보여준다.(status)
 * type : 전송모드를 설정한다.(type 또는 type ascii 또는 type binary)
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

@@ -1,122 +1,48 @@
-# iptables
-* 들어오는 포트를 막아주는 `시스템단 방화벽`입니다.  
-`데몬 시스템`이 아닌 커널단 netfilter을 활용한 rule 작성 명령어이니 이 차이점을 반드시 파악하길 바랍니다.
-방화벽이기에  실 서비스를 한다면은 간단한 데이터들만 마이그레이션 해서 실제로 적용해보고 룰을 옮기거나 해야 됩니다.  
-실 서비스가 방화벽으로 인해 먹통이 되어버려서 아에 방화벽을 꺼두거나 해야되는 대참사가 발생할수 있습니다.  
+- 마지막 업데이트: 2025-09-24
+- 상태: 검토중
 
-# packet filter
-지나가는 패킷의 헤더를 보고 그 전체 패킷의 통과 여부를 결정하는것을 말합니다.  
-일반적으로 패킷은 헤더와 데이터를 가집니다.
+# 개요
+`iptables`는 리눅스 커널의 Netfilter 프레임워크를 제어해 패킷을 허용/차단하거나 NAT를 구성하는 CLI 도구입니다. 체인(chain)과 테이블(table) 개념으로 규칙을 조직하며, 안전한 배포를 위해 테스트 환경에서 먼저 검증하는 것이 필수입니다.
 
-``` bash
-iptables [-t table] [action] [chain] [match] [-j target]
+## 기본 명령 형식
+```bash
+iptables [-t <table>] <action> <chain> [match 조건] -j <target>
 ```
 
-`Table` 사용하는 룰 테이블
-`Action` 규칙을 추가 삭제 관리함
-`Chain` 실제 방향성을 표시
-`Match` 조건
-`Target` 실제 패킷 처리 기준
+# 핵심 개념
+- **테이블**
+  - `filter`: 기본 패킷 필터링.
+  - `nat`: 주소/포트 변환(SNAT, DNAT, MASQUERADE).
+  - `mangle`: ToS/TTL 등 패킷 수정.
+  - `raw`: 연결 추적(conntrack) 제외 설정.
+  - `security`: SELinux와 연동되는 MAC 정책 (RHEL 7+).
+- **체인**
+  - `INPUT`: 로컬 시스템에 도착하는 패킷.
+  - `OUTPUT`: 로컬에서 나가는 패킷.
+  - `FORWARD`: 라우팅되는 패킷.
+  - `PREROUTING`/`POSTROUTING`: NAT 적용 전후 단계.
+- **타깃(Target)**: `ACCEPT`, `DROP`, `REJECT`, `LOG`, `DNAT/SNAT`, 사용자 정의 체인 등.
+- **상태 추적**: `-m state --state NEW,ESTABLISHED,RELATED` 등을 활용해 연결 상태별로 제어합니다.
+- **정책**: `iptables -P INPUT DROP` 같이 기본 정책을 설정하고, 허용 규칙을 명시적으로 추가합니다.
+- **성능 고려**: 규칙은 위에서부터 일치 여부를 검사하므로, 자주 매칭되는 허용 규칙을 상단에 배치하고 LOG 타깃은 최소화합니다.
+- **IPv6**: `ip6tables` 명령이 별도로 존재하며, nftables로 전환 시 `iptables-nft` 호환 레이어를 확인합니다.
 
+# 실무/시험 포인트
+- 변경 전 `iptables-save > backup.rules`로 백업하고, 테스트 모드에서는 `service iptables save` 전 복구 경로를 마련합니다.
+- SSH 차단을 방지하려면 `iptables -A INPUT -p tcp --dport 22 -j ACCEPT` 같은 허용 규칙을 먼저 추가한 뒤 기본 정책을 DROP으로 변경합니다.
+- 로그 수집 시 `-j LOG --log-prefix "iptables_drop:"` 형태로 SIEM과 연계할 수 있습니다.
+- 시험에서는 체인/테이블 역할, `-A`와 `-I` 차이, NAT 예제(SNAT, DNAT) 등을 자주 출제합니다.
+- 커널 5.x 환경에서는 nftables가 기본이므로 중장기적으로 `nft` 기반 정책으로 이전하는 로드맵을 수립합니다.
+- Kubernetes 등 컨테이너 환경에서는 kube-proxy가 iptables 규칙을 대량 생성하므로, `iptables-save | wc -l`로 규칙 수를 모니터링하고 성능 튜닝을 진행합니다.
 
-# chain
+# TODO / 후속 연구
+- `iptables-save`/`iptables-restore`를 이용한 배포 자동화 예시 추가.
+- nftables 전환 가이드와 명령 비교 표 작성.
+- 일반적인 웹 서버 허용 정책 스크립트 예제 첨부.
+- AWS/GCP 등 클라우드 환경에서 보안 그룹과 iptables 관계 정리.
 
-| chain   | 설명|
-| ------- | --- |
-| INPUT   | 방화벽을 최종 목적지로 하는 체인 <br> 서버로 들어오는 기본 정책 |
-| OUTPUT  | 방화벽을 최초 출발지로 하는 체인 <br> 서버에서 나가는 기본 정책|
-| FORWARD | 방화벽을 통과하는 채널을 의미하는 것으로 방화벽을 별도의 서버로 구성해서 서비스할떄 사용하는 체인 <br> LAN에서 패킷이 전송될 위치를 제어합니다.|
-| PREROUTING | 패킷이 라우터의 인터페이스로 들어오고 NAT(Network Address Translation) 처리되기 전에 가로채는 체인입니다. PREROUTING 체인은 패킷의 도착지 주소를 변경하거나 포트 포워딩 등을 구현할 때 사용됩니다. |
-| POSTROUTING | 패킷이 NAT 처리된 후, 라우터의 인터페이스를 통해 나가기 전에 가로채는 체인입니다. POSTROUTING 체인은 패킷의 출발지 주소를 변경하거나 스니핑, 마스커레이드, 로깅 등을 구현할 때 사용됩니다. |
-
-# table
-
-| table | 설명|
-| --- | --- |
-| filter | iptables의 기본 테이블로 패킷 필터링 담당|
-| nat|  Network Address Translation, IP 주소 변환|
-| mangle| 패킷 데이터를 변경하는 특수 규칙을 적용하는 테이블, 성능향상을 위한 TOS(Type of Service) 설정| 
-| raw |  넷필터의 연결추적 하위시스템과 독립적으로 동작해야 하는 규칙을 설정하는 테이블|
-| security | 리눅스 보안 모듈인 SELinux에 의해 사용되는 MAC(Mandatory Access Control) 네트워크 관련 규칙 적용|
-
-# action
-
-| action  | 설명                                                          |
-|-------- |-------------------------------------------------------------- |
-| -N      | 새로운 사용자 정의 사슬                                       |
-| -X      | 비어있는 사슬 제거, 기본 사슬 제거불가                        |
-| -P      | 사슬의 기본 정책 설정 (policy)                                |
-| -L      | 현재 사슬의 규칙 나열                                         |
-| -F      | 사슬로부터 규칙 전부 제거 (flush)                             |
-| -Z      | 사슬내의 모든 규칙들의 패킷과 바이트의 카운트를 0으로 만든다  |
-| -A      | 사슬에 새로운 규칙 추가, 맨 마지막 규칙으로 등록됨 (append)   |
-| -l      | 사슬에 규칙을 맨 첫 부분에 삽입                               |
-| -D      | 사슬의 규칙을 제거                                            |
-
-
-# math (-m)
-
-| match  | 설명                                                                                                                                       |
-|------- |------------------------------------------------------------------------------------------------------------------------------------------- |
-| -s     | 출발지 IP주소나 네트워크와 매칭, 도메인, IP주소, 넷마스크값 이용하여 표시 (명시하지 않으면 any로 판단함)  |
-| -d     | 목적지 IP주소나 네트워크와 매칭, 도메인, IP주소, 넷마스크값 이용하여 표시  (명시하지 않으면 any로 판단함) |
-| -p     | 특정 프로토콜과 매칭, TCP, UDP, ICMP 와 같은 이름을 사용하고 대소문자는 구분하지 않음<br>이 옵션 사용하지 않으면 모든 프로토콜이 대상이됨  |
-| -i     | 패킷이 들어오는 인터페이스(Inbound Interface)를 지정|
-| -o     | 패킷이 나가는 인터페이스(Outbound Interface)를 지정|
-| !      | NOT의 의미로, 특정 매치는 제외한다                 |
-
-
-# iptables -p  
-
-tcp, udp, icmp 지정가능
-
-
-| option   | 설명                                                        |
-|--------- |------------------------------------------------------------ |
-| --sport  | 발신지에서의 하나의 포트 또는 포트범위를 지정               |
-| --dport  | 도착지의 포트를 지정하는 것으로 설정 방법은 --sport와 동일  |
-
-
-# -j table
-
-| target  | 설명                                                                 |
-|-------- |--------------------------------------------------------------------- |
-| ACCEPT  | 패킷을 허가하는 것으로 본래 라우팅대로 진행                          |
-| DROP    | 패킷을 거부하는 것으로 더 이상 어떤 처리도 수행하지 않고 버림        |
-| LOG     | 패킷을 syslog에 전달하여 기록, 일반적으로 /var/log/messages 에 저장  |
-| REJECT  | 패킷을 버리고 동시에 적당한 응답 패킷을 전달                         |
-| RETURN  | 호출 사슬 내에서 패킷 처리를 계속 진행                               |
-
-#  --table
-
-| Target | 설명                                                |
-| ------ | --------------------------------------------------- |
-| filter | 기본 테이블로 방화벽 관련 작업을 수행합니다.           |
-| nat    | 새로운 연결을 생성하는 패킷일떄 참조합니다.(포트 포워딩) |
-| mangle | TTL, ToS 변경 같은 특수 규칙을 적용합니다.             |
-| raw    | 연결 추적 기능을 자세히 설정, 제외하기 위해 사용합니다.  |
-
-# --to
-
-port
-
-# --append
-iptables의 규칙을 구차하는 명령어, 체인끝에 규칙을 추가함  
-
-
-# --state
-
-* NEW : 상태추적 테이블에 완전히 새로 들어왔을 때
-* ESTABLISHED : 상태추적 테이블에 연결 정보를 가지고 있을 때
-* RELATED : 연관된 연결정보(연결 시 서비스 수행 중에 새롭게 추가 될 때, ex)ftp )
-* INVALID : 알수 없거나, 잘못된 헤더 정보를 갖고 올 때
-
-
-# other option
-
---name : 목록 이름을 설정
---set : 추가
---rcheck : 해당 목록에 source ip가 있는 지 체크
---update : source ip가 있는 지 체크 후, 있으면 timestamp 갱신
---seconds : update, rcheck 후 지정된 초에 있는지 확인
---hitcount : 지정한 초에 몇번 들어왔는 지 체크
+# 참고 자료
+- Netfilter/iptables 프로젝트 문서 – [https://netfilter.org](https://netfilter.org).
+- Red Hat – *Using iptables to configure firewall rules*.
+- `man iptables` – 옵션 및 모듈 설명.
+- CNCF – *Kubernetes Network Policies* (iptables 백엔드).

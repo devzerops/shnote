@@ -1,8 +1,12 @@
-# Reset
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## Reset
 
 	Color_Off="\[\033[0m\]" # Text Reset
 
-# Regular Colors
+## Regular Colors
 
 	Black="\[\033[0;30m\]"  # Black
 	Red="\[\033[0;31m\]"    # Red
@@ -13,7 +17,7 @@
 	Cyan="\[\033[0;36m\]"   # Cyan
 	White="\[\033[0;37m\]"  # White
 
-# Bold
+## Bold
 
 	BBlack="\[\033[1;30m\]"  # Black
 	BRed="\[\033[1;31m\]"    # Red
@@ -24,7 +28,7 @@
 	BCyan="\[\033[1;36m\]"   # Cyan
 	BWhite="\[\033[1;37m\]"  # White
 
-# Underline
+## Underline
 
 	UBlack="\[\033[4;30m\]"  # Black
 	URed="\[\033[4;31m\]"    # Red
@@ -35,7 +39,7 @@
 	UCyan="\[\033[4;36m\]"   # Cyan
 	UWhite="\[\033[4;37m\]"  # White
 
-# Background
+## Background
 
 	On_Black="\[\033[40m\]"  # Black
 	On_Red="\[\033[41m\]"    # Red
@@ -46,7 +50,7 @@
 	On_Cyan="\[\033[46m\]"   # Cyan
 	On_White="\[\033[47m\]"  # White
 
-# High Intensty
+## High Intensty
 
 	IBlack="\[\033[0;90m\]"  # Black
 	IRed="\[\033[0;91m\]"    # Red
@@ -57,7 +61,7 @@
 	ICyan="\[\033[0;96m\]"   # Cyan
 	IWhite="\[\033[0;97m\]"  # White
 
-# Bold High Intensty
+## Bold High Intensty
 
 	BIBlack="\[\033[1;90m\]"  # Black
 	BIRed="\[\033[1;91m\]"    # Red
@@ -68,7 +72,7 @@
 	BICyan="\[\033[1;96m\]"   # Cyan
 	BIWhite="\[\033[1;97m\]"  # White
 
-# High Intensty backgrounds
+## High Intensty backgrounds
 
 	On_IBlack="\[\033[0;100m\]"  # Black
 	On_IRed="\[\033[0;101m\]"    # Red
@@ -79,7 +83,7 @@
 	On_ICyan="\[\033[0;106m\]"   # Cyan
 	On_IWhite="\[\033[0;107m\]"  # White
 
-# Various variables you might want for your PS1 prompt instead
+## Various variables you might want for your PS1 prompt instead
 
 	Time12h="\T"
 	Time12a="\@"
@@ -87,3 +91,15 @@
 	PathFull="\W"
 	NewLine="\n"
 	Jobs="\j"
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

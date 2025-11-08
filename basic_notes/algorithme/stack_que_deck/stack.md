@@ -1,4 +1,8 @@
-# 순차 삽입 
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## 순차 삽입 
 
     push(S, x)
 	top ← top + 1;
@@ -8,7 +12,7 @@
 		S(top) ← x;
     end push()
 
-# 순차 삭제
+## 순차 삭제
 
     pop(S)
 	if(top = 0) then underflow;
@@ -18,7 +22,7 @@
 		 }
     end pop()
 
-# 스텍의 삽입
+## 스텍의 삽입
 
     push(s, item)
             newnode ← getnode();
@@ -28,7 +32,7 @@
     end push()
 
 
-# 스텍의 삭제
+## 스텍의 삭제
 
     pop(s)
 	if(top = null) then
@@ -40,3 +44,15 @@
 			return item;
 		 }
     end pop()
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

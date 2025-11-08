@@ -1,4 +1,8 @@
-# Communication(통신)이란?
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## Communication(통신)이란?
 ## 3~4요소 
 * 수신원 / 정보원(Sink / Source)
 	* 정보에 대한 수신 또는 송신 장치
@@ -8,7 +12,7 @@
 * 전송 대상물(Information/ Contents) =  Protocol
 	* 송/수신 메시지
 	* 예: Text, Video, Voice, etc...
-# Information Communication(정보통신)
+## Information Communication(정보통신)
 * 데이터 통신 기술 + 정보 처리(가공, 변환, 저장 등)
 * 정보 통신 시스템의 기능
 	* 거리와 시간을 극복
@@ -16,3 +20,15 @@
 		* 대용량 파일의 공동 이용
 	* 정보 전송의 신뢰성 보장
 * 데이터 통신(Data Communication)
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

@@ -1,4 +1,8 @@
-# Wordlist 
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## Wordlist 
 
 기본적으로 kali를 깔거나 가상환경일때 metapackage를 설치하게되면 자동으로 설치되는 파일로 
 
@@ -29,3 +33,15 @@ apt install wordlist
 |-- wfuzz -> /usr/share/wfuzz/wordlist
 `-- wifite.txt -> /usr/share/dict/wordlist-probable.txt
 ```
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

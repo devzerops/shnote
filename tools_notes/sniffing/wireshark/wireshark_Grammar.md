@@ -1,4 +1,8 @@
-# 화면 표시 필터 비교 연산자
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## 화면 표시 필터 비교 연산자
 
 | English 	| Alias 	| C-like 	| Description 	| Example 	|
 |---	|---	|---	|---	|---	|
@@ -13,7 +17,7 @@
 | contains 	|   	|   	| Protocol, field or slice contains a value 	| sip.To contains "a1762" 	|
 | matches 	|   	| ~ 	| Protocol or text field matches a Perl-compatible regular expression 	| http.host matches "acme\\.(org\|com\|net)" 	|
 
-# 조건 연산자
+## 조건 연산자
 
 | English 	| C-like 	| Description 	| Example 	|
 |---	|---	|---	|---	|
@@ -25,7 +29,7 @@
 | in 	|   	| Set Membership 	| http.request.method in {"HEAD", "GET"}. See “Membership Operator” below. 	|
 
 
-# 알고리즘 연산자
+## 알고리즘 연산자
 
 | Name 	| Syntax 	| Description 	|
 |---	|---	|---	|
@@ -37,7 +41,7 @@
 | Modulo 	| A % B 	| Remainder of A divided by B 	|
 | Bitwise AND 	| A & B 	| Bitwise AND of A and B 	|
 
-# 조건 필터 연산자
+## 조건 필터 연산자
 
 | Function 	| Description 	|
 |----------	|---	|
@@ -50,7 +54,7 @@
 | min 	    | Return the minimum value for the arguments. 	|
 | abs 	    | Return the absolute value for the argument. 	|
 
-# 자주 사용하는 구문
+## 자주 사용하는 구문
 
 ip.addr == 192.168.2.1 
 출발지나 목적지의 ip가 192.168.2.1일경우 출력
@@ -75,3 +79,15 @@ tcp.analvsis.retransmission 추적에서 모든 전송을 표시
 
 
 출처: https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

@@ -1,11 +1,15 @@
-# 전화
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## 전화
 
 ``` js
 const str = '유선전화: 02-900-1234, 핸드폰: 010-2000-7777';
 console.log(str.match(/\d{2,3}-\d{3,4}-\d{4}/g)); // ['02-900-1234', '010-2000-7777’]
 ```
 
-# 이메일
+## 이메일
 
 ``` js
 const text = '이메일: test1@gmail.com';
@@ -32,3 +36,15 @@ console.log('We will, we will'.replace(/we/i, 'I')); // I will, we will
 // 플래그 g 있음
 console.log('We will, we will'.replace(/we/gi, 'I')); // I will, I will
 ```
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

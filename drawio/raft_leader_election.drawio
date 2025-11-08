@@ -1,0 +1,52 @@
+<mxfile host="app.diagrams.net" modified="2025-09-25T00:00:00.000Z" agent="7.0" version="21.6.5" type="device">
+  <diagram id="raft" name="Raft Leader Election">
+    <mxGraphModel dx="968" dy="617" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="start" value="Follower Timeout" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="80" y="120" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="candidate" value="Becomes Candidate\nterm++ &amp; vote for self" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="320" y="120" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="requestVotes" value="RequestVote RPC" style="whiteSpace=wrap;html=1;shape=rhombus;perimeter=rhombusPerimeter;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="580" y="120" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="win" value="Majority?" style="whiteSpace=wrap;html=1;shape=rhombus;perimeter=rhombusPerimeter;fillColor=#d4e1f5;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="820" y="120" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="leader" value="Become Leader\nStart heartbeats" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="120" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="repeat" value="No majority -> restart election timer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="820" y="260" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="heartbeat" value="AppendEntries heartbeat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="120" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="electionEdge" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;" edge="1" parent="1" source="start" target="candidate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="candidateToVote" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#d79b00;" edge="1" parent="1" source="candidate" target="requestVotes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="voteToMajority" value="responses" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#b85450;" edge="1" parent="1" source="requestVotes" target="win">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="majorityYes" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#82b366;" edge="1" parent="1" source="win" target="leader">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="majorityNo" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#b85450;" edge="1" parent="1" source="win" target="repeat">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="repeatLoop" value="timeout" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#b85450;" edge="1" parent="1" source="repeat" target="candidate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="leaderToHeartbeat" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#82b366;" edge="1" parent="1" source="leader" target="heartbeat">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

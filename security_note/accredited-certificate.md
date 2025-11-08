@@ -1,3 +1,6 @@
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
 # 공인인증서
 
 ![accredited-certificate](./img/accredited-certificate.png)

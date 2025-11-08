@@ -1,14 +1,18 @@
-# Load Balancing 이란?
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
+## Load Balancing 이란?
 
 
-# 기능
+## 기능
 * Health Check
 * 알고리즘에 따른 분산 처리
 * NAT(Network Address Translation)
 * DSR(Direct Server Return)
 
 
-# Load Balancing 알고리즘
+## Load Balancing 알고리즘
 
 ### Least Connection 알고리즘
 
@@ -35,7 +39,19 @@
 ### 
 
 
-# Load Balancer
+## Load Balancer
 * 서버의 부하를 분산 해주는 장치 또는 기술을 뜻한다.
 * 서버 상단 네트워크에 위치한다.
 * 서버 한대에 집중되지 않게 트래픽을 관리하여 각 서버가 최적의 효율을 발휘할 수 있게 해준다.
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

@@ -1,5 +1,8 @@
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
 
-# Snort Rule 구조
+# 개요
+## Snort Rule 구조
 
 ![rule_struct](./img/rule_strcut.png)
 
@@ -9,7 +12,7 @@ Src/Dst IP Port: 출발지, 목적지 ip와 포트를 적음
 
 (Option): 매칭되는 케이스를 상세하고 명확하게 조작이 가능
 
-# Action
+## Action
 
 Action: 룰이 매칭 됐을때 수행할 Alert, Pass, Drop 등을 수행할 다양한 액션을 선택하여 넣음
 
@@ -22,13 +25,13 @@ Action: 룰이 매칭 됐을때 수행할 Alert, Pass, Drop 등을 수행할 다
 | Reject | Drop과 같은 액션을 취함 <br> TCP의 REST 패킷을 출발지로 전송 <br> ICMP 패킷은 Unreachable로 반송시킴|
 | Sdrop | Drop과 동일하게 패킷을 차단하지만 로그 기록을 하지 않음 |
 
-# Protocol
+## Protocol
 
 Protocol: ip, tcp, udp, icmp, any 등을 프로토콜로 표시
 
 TCP, UDP, ICMMP, IP, ANY 등 프로토콜 타입을 선택할 수 있음
 
-# Rule Header (Src/Dst IP)
+## Rule Header (Src/Dst IP)
 
 Snort.cond 
 
@@ -47,7 +50,7 @@ Snort.cond
 | $SMTP_SERVERS | SMTP 메일 서버의 아이피 주소 변수|
 | $SSH_SERVERS | SSH 프로토콜을 사용하는 장비의 아이피 주소 변수|
 
-# Rule Header (Src/Dst Port)
+## Rule Header (Src/Dst Port)
 
 | 종류 | 내용 |
 | --- | --- |
@@ -62,7 +65,7 @@ Snort.cond
 | -> | 송신지에서 수신지로 향함을 의미함 |
 | <> | 송신지에서 수신지의 오가는 패킷을 의미함 |
 
-# option
+## option
 
 ## content
 
@@ -114,3 +117,15 @@ ex) flow:established,to_client;
 2000000 ~ 2999999: Emerging Threats에서 받아오는 시그니처에 할당된 sid값
 
 3000000 ~: 원하는 대로 사용 가능한 영역
+
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

@@ -1,3 +1,7 @@
+- 마지막 업데이트: 2025-09-24
+- 상태: 초안
+
+# 개요
 * `Receive Window`  : 수신자(Receiver)가 송신자(Sender)에게 알려 주는 현재 수신 가능한 비어 있는 Rx Socket Buffer 크기
 
 * `Send Window (Tx Window)` : 송신자가 수신자의 ACK 없이 한번에 전송할 수 있는 데이터 양
@@ -18,3 +22,14 @@
 
 * `buffer overflow` : buffer에 저장공간이 꽉차서 새로이 도착하는 데이터가 버려지는 것을 buffer overflow가 발생한다고 이야기 합니다.
 
+# 핵심 개념
+- (정리 예정)
+
+# 실무/시험 포인트
+- (정리 예정)
+
+# TODO / 후속 연구
+- (정리 예정)
+
+# 참고 자료
+- (추가 예정)

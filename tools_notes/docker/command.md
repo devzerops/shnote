@@ -1,89 +1,104 @@
-Docker run 옵션 종류
+- 마지막 업데이트: 2025-09-25
+- 상태: 검토중
 
-    -i, --interactive
-        표준 입력(stdin)을 활성화하며, 컨테이너와 연결(attach)되어 있지 않더라도 표준 입력을 유지합니다.
-        보통 이 옵션을 사용하여 Bash 에 명령을 입력합니다.
-    -t, --tty
-        TTY 모드(pseudo-TTY)를 사용합니다.
-        Bash를 사용하려면 이 옵션을 설정해야 합니다.
-        이 옵션을 설정하지 않으면 명령을 입력할 수는 있지만, 셸이 표시되지 않습니다.
-    --name
-        컨테이너 이름을 설정합니다.
-    -d, --detach
-        Detached 모드입니다.
-        보통 데몬 모드라고 부르며, 컨테이너가 백그라운드로 실행됩니다.
-    -p, --publish
-        호스트와 컨테이너의 포트를 연결합니다. (포트포워딩)
-        <호스트 포트>:<컨테이너 포트>
-            -p 80:80
-    --privileged
-        컨테이너 안에서 호스트의 리눅스 커널 기능(Capability)을 모두 사용합니다.
-        호스트의 주요 자원에 접근할 수 있습니다.
-    --rm
-        프로세스 종료시 컨테이너 자동 제거
-    --restart
-        컨테이너 종료 시, 재시작 정책을 설정합니다.
-            --restart="always"
-    -v, --volume
-        데이터 볼륨을 설정입니다.
-        호스트와 컨테이너의 디렉토리를 연결하여, 파일을 컨테이너에 저장하지 않고 호스트에 바로 저장합니다. (마운트)
+# 개요
+Docker CLI는 컨테이너 실행(`docker run`), 라이프사이클 관리(`docker ps`, `docker stop`), 이미지/네트워크/볼륨 제어 명령으로 구성됩니다. 자주 사용하는 옵션을 정리해 두면 환경 구성 시간을 크게 단축할 수 있습니다.
 
--u, --user
+## TL;DR
+- 컨테이너 배포 점검 루틴: `docker run` → `docker ps --format` → `docker logs -f` → `docker exec`.
+- 실행 결과와 리소스 확인은 `docker inspect`, `docker stats`, `docker system df`를 조합해 단일 스크립트로 자동화합니다.
+- 재사용 가능한 환경을 위해 compose 템플릿을 함께 관리하고, 신뢰할 수 있는 명령 조합은 이 문서의 TODO에 테스트 로그로 남깁니다.
 
-    컨테이너가 실행될 리눅스 사용자 계정 이름 또는 UID를 설정합니다.
-        --user root
+## docker run 주요 옵션
+| 옵션 | 설명 | 실전 활용 |
+|------|------|-----------|
+| `-d`, `--detach` | 백그라운드 실행 | 데몬성 서비스 컨테이너 구동 |
+| `-i`, `--interactive` / `-t`, `--tty` | 표준입력/TTY 유지 | `-it` 조합으로 셸 접속 |
+| `--name` | 컨테이너 이름 지정 | 스크립트에서 컨테이너 식별 |
+| `-p` | 포트 포워딩 `<host>:<container>` | `-p 8080:80` 등 서비스 노출 |
+| `-v`, `--volume` | 호스트 ↔ 컨테이너 경로 마운트 | 데이터 영속·설정 공유 |
+| `--env`, `-e` | 환경 변수 주입 | 비밀값/설정 전달 (`-e TZ=Asia/Seoul`) |
+| `--restart` | 종료 시 재시작 정책(`no/always/on-failure/unless-stopped`) | 시스템 재부팅 후 서비스 유지 |
+| `--privileged` / `--cap-add` | 커널 Capability 조정 | 저수준 네트워킹·디바이스 접근 |
+| `--gpus` | NVIDIA GPU 자원 할당 | ML 워크로드 (`--gpus all`) |
+| `--memory` / `--cpus` | 리소스 제한 | 과도한 자원 사용 방지 |
 
--e, --env
+### 실행 예시
+```bash
+docker run -d \
+  --name web \
+  -p 8080:80 \
+  -v $(pwd)/html:/usr/share/nginx/html:ro \
+  --restart=unless-stopped \
+  nginx:stable
+```
 
-    컨테이너 내에서 사용할 환경 변수를 설정합니다.
-    보통 설정 값이나 비밀번호를 전달할 때 사용합니다.
-        -e GRANT_SUDO=yes
+### 실행 후 점검 루틴
+```bash
+# 컨테이너 목록 요약 출력
+docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'
 
---link
+# 초기 오류 확인 (필요 시 tail)
+docker logs -f web | head -n 20
 
-    컨테이너끼리 연결합니다.
-    [컨테이너명 : 별칭]
-        --link="db:db"
+# 환경 변수/볼륨 검증
+docker inspect web --format '{{json .Config.Env}}' | jq .
+docker inspect web --format '{{range .Mounts}}{{.Source}} -> {{.Destination}}\n{{end}}'
+```
 
--h, --hostname
+예상 출력 예시:
+```
+NAMES   IMAGE          STATUS
+web     nginx:stable   Up 12 seconds
 
-    컨테이너의 호스트 이름을 설정합니다.
+2025/09/25 10:02:41 [notice] 1#1: start worker processes
+2025/09/25 10:02:41 [notice] 1#1: start worker process 30
+```
 
--w, --workdir
+## 기타 자주 쓰는 명령
+| 명령 | 설명 |
+|------|------|
+| `docker ps -a` | 모든 컨테이너 조회 |
+| `docker logs -f <name>` | 실시간 로그 확인 |
+| `docker exec -it <name> /bin/bash` | 실행 중 컨테이너 셸 접속 |
+| `docker cp <src> <container>:<dst>` | 파일 복사 |
+| `docker image ls` / `docker image prune` | 이미지 목록·정리 |
+| `docker network ls` / `docker network inspect` | 네트워크 정보 확인 |
+| `docker stats` | 실시간 자원 사용량 모니터링 |
+| `docker system df` | 이미지/컨테이너/볼륨 디스크 사용량 |
 
-    컨테이너 안의 프로세스가 실행될 디렉터리를 설정합니다.
+### Compose 전환 예제
+```yaml
+# docker compose.yaml (v2)
+services:
+  web:
+    image: nginx:stable
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/usr/share/nginx/html:ro
+    restart: unless-stopped
+```
 
--a, --attach
+> `docker compose up -d`로 동일 구성을 재현하고, `docker compose logs -f web`으로 로그를 통합 확인합니다.
 
-    컨테이너에 표준 입력(stdin), 표준 출력(stdout), 표준 에러(stderr) 를 연결합니다.
+# 핵심 개념
+- `docker run`은 이미지 풀 → 컨테이너 생성 → 실행까지 한 번에 수행하며, 동일 옵션으로 재생성하려면 compose 파일이나 스크립트화가 필요하다.
+- Volume, Network, Restart 정책은 컨테이너 재구성 시에도 동일하게 재현할 수 있도록 관리해야 한다.
+- 권한 관련 옵션은 최소 권한 원칙을 지켜 `--privileged` 대신 `--cap-add`, `--device` 등 세분화 사용을 우선 고려한다.
 
--c, --cpu-shares
+# 실무/시험 포인트
+- 운영 환경에서는 `--restart=unless-stopped`와 헬스체크(`HEALTHCHECK`, `docker ps --format`)를 조합해 장애 감지에 대비한다.
+- `docker stats`, `docker inspect`로 리소스 사용량과 설정을 확인하고, Compose/Kubernetes 이전 시 매핑 정보를 추출한다.
+- 자격시험(DCA, CKAD 준비 등)에서는 `docker run` 옵션 조합 문제와 로그/exec 명령 사용이 빈출된다.
 
-    CPU 자원 분배 설정입니다.
-    기본 값은 1024이며, 각 값은 상대적으로 적용됩니다.
+# TODO / 후속 연구
+- [x] Compose v2로 동일 구성을 정의한 예시 추가.
+- [ ] SELinux/AppArmor `--security-opt` 옵션별 차이 정리.
+- [ ] 데몬 설정(`/etc/docker/daemon.json`) 관련 자주 쓰는 키 추가.
+- [ ] `docker stats`/`docker system df` 샘플 출력 캡처 추가.
 
--m, --memory
-
-    메모리 한계를 설정합니다.
-    <숫자><단위> 형식이며 단위는 b, k, m, g 를 사용할 수 있습니다
-        --memory=”100000b”
-
---gpus
-
-    컨테이너에서 호스트의 NVIDIA GPU 를 사용할 수 있도록 설정합니다.
-        호스트는 NVIDIA GPU 가 장착 된 Linux 서버여야하며,
-        NVIDIA driver 가 설치되어 있어야하고,
-        docker 19.03.5 버전 이상이어야합니다.
-    GPU 모두 사용하기
-        --gpus all
-    GPU 지정해서 사용하기
-        --gpus ‘”device=0,1”’
-
---security-opt
-
-    SELinux, AppArmor 옵션을 설정합니다.
-        --security-opt=”label:level:TopSecret”
-
-그외 도커 명령어들
-
-https://www.fosstechnix.com/docker-command-cheat-sheet/
+# 참고 자료
+- Docker Docs – [CLI Reference](https://docs.docker.com/engine/reference/commandline/cli/).
+- Docker Docs – [`docker run`](https://docs.docker.com/engine/reference/run/).
+- Docker Docs – [Runtime options](https://docs.docker.com/engine/security/seccomp/).
